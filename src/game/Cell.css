@@ -1,0 +1,60 @@
+.Cell {
+    border-spacing: 0;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    border: 3px solid;
+    border-color: #002966;
+    border-style: inset;
+    background-color: #0066ff
+}
+
+.Cell-Show {
+    background-color: lightgray;
+    border-style: groove;
+}
+
+span {
+    font-weight: bold;
+    font-size: 20px;
+    width: 30px;
+    height: 20px;
+    padding-top: 8px;
+    vertical-align: middle;
+}
+
+.Cell-Num0 {
+    color: lightgray;
+}
+
+.Cell-Num1 {
+    color: blue;
+}
+
+.Cell-Num2 {
+    color: green;
+}
+
+.Cell-Num3 {
+    color: red;
+}
+
+.Cell-Num4 {
+    color: purple;
+}
+
+.Cell-Num5 {
+    color: maroon;
+}
+
+.Cell-Num6 {
+    color: #12a19c;
+}
+
+.Cell-Num7 {
+    color: black;
+}
+
+.Cell-Num8 {
+    color: #595959;
+}
