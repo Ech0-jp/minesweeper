@@ -21,9 +21,27 @@ class Cell extends Component {
         });
     }
 
-    showCell(){
-        if (!this.state.show)
+    flagCell(){
+        this.props.flagCell(this.props.cell);
+    }
+
+    onClick(e){
+        e.preventDefault();
+        if (this.props.cell.show)
+            return;
+
+        if (e.nativeEvent.which === 1) {
             this.props.showCell(this.props.cell);
+        } else if (e.nativeEvent.which === 3) {
+            this.props.flagCell(this.props.cell);
+        }
+    }
+
+    onDoubleClick(){
+        if (!this.props.cell.show)
+            return;
+
+        // do double click.
     }
 
     render() {
@@ -54,7 +72,7 @@ class Cell extends Component {
             );
         }
         return (
-            <td onClick={this.showCell.bind(this)}>
+            <td onClick={this.onClick.bind(this)} onContextMenu={this.onClick.bind(this)} onDoubleClick={this.onDoubleClick.bind(this)}>
                 {cell}
             </td>
         );

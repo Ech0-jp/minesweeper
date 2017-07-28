@@ -10,6 +10,12 @@ class GameBoard extends Component {
         }
     }
 
+    newGame(){
+        this.setState({
+            rows : this.generateBoard(this.props)
+        })
+    }
+
     generateBoard(props){
         var board = [];
 
@@ -38,16 +44,44 @@ class GameBoard extends Component {
         return board;
     }
 
+    restart(){
+        var _rows = this.state.rows;
+        for (var x = 0; x < this.props.rows; x++) {
+            for (var y = 0; y < this.props.cols; y++) {
+                _rows[x][y].show = false;
+                _rows[x][y].flagged = false;
+            }
+        }
+        this.setState({
+            rows: _rows
+        });
+    }
+
+    flagCell(cell) {
+        var _rows = this.state.rows;
+        _rows[cell.x][cell.y].flagged = !cell.flagged;
+        this.setState({rows: _rows});
+        this.props.cellFlagged(_rows[cell.x][cell.y].flagged);
+    }
+
     showCell(cell) {
+        if (cell.isMine) {
+            this.props.gameOver(false);
+            return;
+        }
+
         var mineCount = this.countMines(cell);
         var _rows = this.state.rows;
 
         _rows[cell.x][cell.y].show = true;
         _rows[cell.x][cell.y].mineCount = mineCount;
         this.setState({rows: _rows});
+        this.props.cellShown();
 
         if (cell.flagged) {
-            // remove flag and shit..
+            _rows[cell.x][cell.y].flagged = false;
+            this.setState({rows: _rows});
+            this.props.cellFlagged(false);
         }
 
         if (mineCount === 0) {
@@ -90,7 +124,7 @@ class GameBoard extends Component {
     render(){
         var Rows = this.state.rows.map((row, index) => {
             return (
-                <Row key={index} cells={row} showCell={this.showCell.bind(this)} />
+                <Row key={index} cells={row} showCell={this.showCell.bind(this)} flagCell={this.flagCell.bind(this)} />
             );
         });
         return(
