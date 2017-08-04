@@ -54,6 +54,7 @@ table.best-times {
 table.best-times th {
     background-color: #ddd;
     border: 1px solid #ccc;
+    height: 20px;
 }
 
 table.best-times tr {
