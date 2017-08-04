@@ -36,13 +36,24 @@ class App extends Component {
         });
     }
 
+    newCustomGame(cols, rows, mines) {
+        this.setState({
+            menu : "CustomGame",
+            cols: cols,
+            rows: rows,
+            mines: mines
+        });
+    }
+
     getState() {
         if (this.state.menu === "MainMenu") {
-            return <MainMenu newGame={this.newGame.bind(this)} statistics={this.statistics.bind(this)}/>;
+            return <MainMenu newGame={this.newGame.bind(this)} newCustomGame={this.newCustomGame.bind(this)} statistics={this.statistics.bind(this)}/>;
         } else if (this.state.menu === "Statistics") {
             return <StatisticsMenu mainMenu={this.mainMenu.bind(this)}/>;
         } else if (this.state.menu === "Game") {
             return <Minesweeper difficulty={this.state.difficulty} mainMenu={this.mainMenu.bind(this)} />;
+        } else if (this.state.menu === "CustomGame") {
+            return <Minesweeper difficulty="custom" cols={this.state.cols} rows={this.state.rows} mines={this.state.mines} mainMenu={this.mainMenu.bind(this)} />;
         }
     }
 
