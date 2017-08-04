@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import Popup from 'react-popup'
-import GameBoard from './GameBoard'
+import React, { Component } from 'react';
+import Popup from 'react-popup';
+import GameBoard from './GameBoard';
+import Statistics from '../util/Statistics';
 
 const NUM_BEGINNER_MINES = 10;
 const BEGINNER_COLS = 9;
@@ -17,18 +18,39 @@ const ADVANCED_ROWS = 16;
 class Minesweeper extends Component {
     constructor(props) {
         super(props);
-        switch (props.difficulty) {
+        this.state = {
+            cellsShown: 0,
+            flaggedCells: 0,
+            gameOverState: 0,
+            minutes: 0,
+            seconds: 0
+        }
+        this.setDifficulty();
+        this.generatePopups();
+        this.timerStarted = false;
+        this.interval = [];
+    }
+
+    setDifficulty(){
+        switch (this.props.difficulty) {
             case "beginner":
-                this.state = {difficulty: "beginner", numMines: NUM_BEGINNER_MINES, cols: BEGINNER_COLS, rows: BEGINNER_ROWS, cellsShown: 0, flaggedCells: 0}
+                this.numMines = NUM_BEGINNER_MINES;
+                this.cols = BEGINNER_COLS;
+                this.rows = BEGINNER_ROWS;
                 break;
             case "intermediate":
-                this.state = {difficulty: "intermediate", numMines: NUM_INTERMEDIATE_MINES, cols: INTERMEDIATE_COLS, rows: INTERMEDIATE_ROWS, cellsShown: 0, flaggedCells: 0}
+                this.numMines = NUM_INTERMEDIATE_MINES;
+                this.cols = INTERMEDIATE_COLS;
+                this.rows = INTERMEDIATE_ROWS;
                 break;
             case "advanced":
-                this.state = {difficulty: "advanced", numMines: NUM_ADVANCED_MINES, cols: ADVANCED_COLS, rows: ADVANCED_ROWS, cellsShown: 0, flaggedCells: 0}
+                this.numMines = NUM_ADVANCED_MINES;
+                this.cols = ADVANCED_COLS;
+                this.rows = ADVANCED_ROWS;
                 break;
+            default:
+                return;
         }
-        this.generatePopups();
     }
 
     generatePopups(){
@@ -88,14 +110,32 @@ class Minesweeper extends Component {
     }
 
     cellShown(){
+        if (!this.timerStarted) {
+            this.interval = setInterval(this.timer.bind(this), 1000);
+            this.timerStarted = true;
+        }
         this.setState({cellsShown: ++ this.state.cellsShown});
-        var cellsToShow = ((this.state.cols * this.state.rows) - this.state.numMines);
-        console.log('cellsToShow: ' + cellsToShow + ', cellsShown: ' + this.state.cellsShown);
+        var cellsToShow = ((this.cols * this.rows) - this.numMines);
         if (cellsToShow === this.state.cellsShown)
             this.gameOver(true);
     }
 
     gameOver(win){
+        clearInterval(this.interval);
+        this.timerStarted = false;
+        this.setState({gameOverState : true});
+        Statistics.Add(this.props.difficulty, this.state.minutes, this.state.seconds, win);
+        setTimeout(this.showPopup(win), 10000000000000);
+    }
+
+    timer(){
+        this.setState({seconds: ++this.state.seconds});
+        if (this.state.seconds % 60 === 0) {
+            this.setState({minutes: ++this.state.minutes, seconds: 0})
+        }
+    }
+
+    showPopup(win) {
         if (win) {
             Popup.plugins().win(this);
         } else {
@@ -104,21 +144,25 @@ class Minesweeper extends Component {
     }
 
     newGame(){
+        this.setState({minutes: 0, seconds: 0, cellsShown: 0, flaggedCells: 0,  gameOverState : false});
         this.gameBoard.newGame();
     }
 
     restartGame(){
+        this.setState({minutes: 0, seconds: 0, cellsShown: 0, flaggedCells: 0,  gameOverState : false});
         this.gameBoard.restart();
     }
 
     render(){
         return (
             <div className="Minesweeper">
-                <GameBoard difficulty={this.state.difficulty} numMines={this.state.numMines} cols={this.state.cols} rows={this.state.rows}
+                <GameBoard numMines={this.numMines} cols={this.cols} rows={this.rows}
                                       cellFlagged={this.cellFlagged.bind(this)} cellShown={this.cellShown.bind(this)} gameOver={this.gameOver.bind(this)}
+                                      gameOverState={this.state.gameOverState}
                                       ref={(instance) => { this.gameBoard = instance }}/>
                 <div className="GameStats">
-                    <p>Mines left: {this.state.numMines - this.state.flaggedCells}</p>
+                    <p>Mines left: {this.numMines - this.state.flaggedCells}</p>
+                    <p>Time: {this.state.minutes}:{this.state.seconds}</p>
                 </div>
             </div>
         );

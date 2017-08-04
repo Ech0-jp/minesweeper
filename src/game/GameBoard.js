@@ -6,7 +6,7 @@ class GameBoard extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            rows : this.generateBoard(props)
+            rows :  this.generateBoard(props)
         }
     }
 
@@ -28,6 +28,7 @@ class GameBoard extends Component {
                     show : false,
                     mineCount : 0,
                     isMine : false,
+                    showMine : false,
                     flagged : false
                 });
             }
@@ -65,14 +66,16 @@ class GameBoard extends Component {
     }
 
     showCell(cell) {
+        var _rows = this.state.rows;
+
         if (cell.isMine) {
+            _rows[cell.x][cell.y].show = true;
+            this.setState({rows: _rows});
             this.props.gameOver(false);
             return;
         }
 
         var mineCount = this.countMines(cell);
-        var _rows = this.state.rows;
-
         _rows[cell.x][cell.y].show = true;
         _rows[cell.x][cell.y].mineCount = mineCount;
         this.setState({rows: _rows});
@@ -89,14 +92,34 @@ class GameBoard extends Component {
         }
     }
 
-    showNeighbouringCells(cell) {
-        for (var xoff = -1; xoff <= 1; xoff++) {
-            for (var yoff = -1; yoff <= 1; yoff++) {
-                var x = cell.x + xoff;
-                var y = cell.y + yoff;
+    showNeighbouringCells(cell, doubleClicked = false) {
+        if (doubleClicked) {
+            var flagCount = 0;
+            for (var xoff = -1; xoff <= 1; xoff++) {
+                for (var yoff = -1; yoff <= 1; yoff++) {
+                    var x = cell.x + xoff;
+                    var y = cell.y + yoff;
+                    if  (x > -1 && x < this.props.rows && y > -1 && y < this.props.cols) {
+                        if (this.state.rows[x][y].flagged) {
+                            flagCount++;
+                        }
+                    }
+                }
+            }
+            if (flagCount !== cell.mineCount)
+                return;
+        }
+
+        for (xoff = -1; xoff <= 1; xoff++) {
+            for (yoff = -1; yoff <= 1; yoff++) {
+                x = cell.x + xoff;
+                y = cell.y + yoff;
                 if  (x > -1 && x < this.props.rows && y > -1 && y < this.props.cols) {
-                    if (!this.state.rows[x][y].show) {
-                        this.showCell(this.state.rows[x][y])
+                    var targetCell = this.state.rows[x][y];
+                    if (doubleClicked && !targetCell.flagged && !targetCell.show){
+                        this.showCell(targetCell);
+                    } else if (!doubleClicked && !targetCell.show) {
+                        this.showCell(targetCell);
                     }
                 }
             }
@@ -124,11 +147,11 @@ class GameBoard extends Component {
     render(){
         var Rows = this.state.rows.map((row, index) => {
             return (
-                <Row key={index} cells={row} showCell={this.showCell.bind(this)} flagCell={this.flagCell.bind(this)} />
+                <Row key={index} cells={row} showCell={this.showCell.bind(this)} showNeighbouringCells={this.showNeighbouringCells.bind(this)} flagCell={this.flagCell.bind(this)} gameOverState={this.props.gameOverState}/>
             );
         });
         return(
-            <table className="game-board" cellspacing="0">
+            <table className="game-board" cellSpacing="0">
                 <tbody>
                     {Rows}
                 </tbody>
