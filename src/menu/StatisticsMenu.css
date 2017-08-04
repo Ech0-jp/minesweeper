@@ -1,0 +1,93 @@
+div.tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+}
+
+div.tab button {
+    background-color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    margin: 0;
+}
+
+div.tab button:hover {
+    background-color: #ddd;
+}
+
+div.tab button.active {
+    background-color: #ccc;
+}
+
+.StatisticsMenu table {
+    width: 450px;
+    height: 166px;
+    background-color: #f1f1f1f1;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.StatisticsMenu table tr {
+    vertical-align: top;
+}
+
+.StatisticsMenu table tr h3 {
+    background-color: #ddd;
+    margin: 0;
+    border: 1px solid #ccc;
+}
+
+.StatisticsMenu table td {
+    border: 1px solid #ccc;
+}
+
+table.best-times {
+    width: 100%;
+    height: 166px;
+    background-color: #f1f1f1f1;
+    margin: 0;
+}
+
+table.best-times th {
+    background-color: #ddd;
+    border: 1px solid #ccc;
+}
+
+table.best-times tr {
+    border: 1px solid #ccc;
+}
+
+table.best-times td {
+    border: 1px solid #ccc;
+}
+
+table.general-stats {
+    width: 100%;
+    height: 166px;
+    margin: 0;
+}
+
+table.general-stats tr td:first-child {
+    text-align: left;
+}
+
+.StatisticsMenu button {
+    width: 100px;
+    height: 50px;
+    border: 2px solid #ccc;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    margin: 5px;
+}
+
+.StatisticsMenu button:hover {
+    background-color: #ddd;
+}
+
+.StatisticsMenu button.active {
+    background-color: #ccc;
+}
