@@ -48,6 +48,11 @@ class Minesweeper extends Component {
                 this.cols = ADVANCED_COLS;
                 this.rows = ADVANCED_ROWS;
                 break;
+            case "custom":
+                this.numMines = this.props.mines;
+                this.cols = this.props.cols;
+                this.rows = this.props.rows;
+                break;
             default:
                 return;
         }
@@ -125,7 +130,7 @@ class Minesweeper extends Component {
         this.timerStarted = false;
         this.setState({gameOverState : true});
         Statistics.Add(this.props.difficulty, this.state.minutes, this.state.seconds, win);
-        setTimeout(this.showPopup(win), 10000000000000);
+        setTimeout(() => { this.showPopup(win); }, 1000);
     }
 
     timer(){
