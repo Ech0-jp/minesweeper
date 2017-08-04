@@ -1,0 +1,42 @@
+.MainMenu button {
+    width: 100px;
+    height: 50px;
+    border: 2px solid #ccc;
+    outline: none;
+    cursor: pointer;
+    margin: 5px;
+}
+
+.custom-settings:nth-child(1n+0){
+    visibility: collapse;
+    height: 0;
+}
+
+.custom-settings-active {
+    visibility: visible;
+    width: 175px;
+    height: 230px;
+    border: 1px solid #ccc;
+    margin-left: calc(50% - 87.5px);
+}
+
+.custom-settings-active table {
+    width: 175px;
+}
+
+.custom-settings-active tr {
+    border: 1px solid #ccc;
+}
+
+.custom-settings-active tr:last-child {
+    column-span: all;
+    align: center;
+}
+
+.custom-settings-active input {
+    width: 50px;
+}
+
+.custom-settings-active tr td:first-child {
+    text-align: right;
+}
