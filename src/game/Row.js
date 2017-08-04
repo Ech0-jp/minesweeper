@@ -18,7 +18,7 @@ class Row extends Component {
     render() {
         var Cells = this.state.cells.map((cell, index) => {
             return (
-                <Cell key={index} cell={cell} showCell={this.props.showCell} flagCell={this.props.flagCell} />
+                <Cell key={index} cell={cell} showCell={this.props.showCell} showNeighbouringCells={this.props.showNeighbouringCells} flagCell={this.props.flagCell} gameOverState={this.props.gameOverState} />
             );
         });
         return (
