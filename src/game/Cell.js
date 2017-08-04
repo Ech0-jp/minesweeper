@@ -8,7 +8,8 @@ class Cell extends Component {
             show : false,
             isMine : props.cell.isMine,
             flagged : props.cell.flagged,
-            mineCount : props.cell.mineCount
+            mineCount : props.cell.mineCount,
+            gameOverState : props.gameOverState
         }
     }
 
@@ -17,7 +18,8 @@ class Cell extends Component {
             show: props.cell.show,
             isMine : props.cell.isMine,
             flagged : props.cell.flagged,
-            mineCount : props.cell.mineCount
+            mineCount : props.cell.mineCount,
+            gameOverState : props.gameOverState
         });
     }
 
@@ -27,7 +29,7 @@ class Cell extends Component {
 
     onClick(e){
         e.preventDefault();
-        if (this.props.cell.show)
+        if (this.props.cell.show || this.state.gameOverState)
             return;
 
         if (e.nativeEvent.which === 1) {
@@ -37,11 +39,12 @@ class Cell extends Component {
         }
     }
 
-    onDoubleClick(){
-        if (!this.props.cell.show)
+    onDoubleClick(e){
+        e.preventDefault();
+        if (!this.props.cell.show || this.state.gameOverState)
             return;
 
-        // do double click.
+        this.props.showNeighbouringCells(this.props.cell, true);
     }
 
     render() {
@@ -60,16 +63,24 @@ class Cell extends Component {
                     </div>
                 );
             }
-        } else if (this.state.flagged) {
+        } else if (this.state.flagged && !this.state.gameOverState) {
                 cell = (
                     <div className="Cell">
                         <span className="Cell-Flagged">F</span>
                     </div>
                 );
         } else {
-            cell = (
+            if (this.state.gameOverState && this.state.isMine) {
+                cell = (
+                        <div className="Cell">
+                            <span className="Cell-Bomb">X</span>
+                        </div>
+                );
+            } else {
+                cell = (
                     <div className="Cell"></div>
-            );
+                );
+            }
         }
         return (
             <td onClick={this.onClick.bind(this)} onContextMenu={this.onClick.bind(this)} onDoubleClick={this.onDoubleClick.bind(this)}>
