@@ -6,7 +6,8 @@
     border: 3px solid;
     border-color: #002966;
     border-style: inset;
-    background-color: #0066ff
+    background-color: #0066ff;
+    user-select: none;
 }
 
 .Cell-Show {
