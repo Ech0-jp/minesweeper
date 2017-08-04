@@ -6,7 +6,8 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-popup": "^0.8.0",
-    "react-scripts": "1.0.10"
+    "react-scripts": "1.0.10",
+    "universal-cookie": "^2.0.8"
   },
   "scripts": {
     "start": "react-scripts start",
