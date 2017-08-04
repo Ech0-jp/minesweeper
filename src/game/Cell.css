@@ -15,7 +15,7 @@
     border-style: groove;
 }
 
-span {
+.Cell span {
     font-weight: bold;
     font-size: 20px;
     width: 30px;
@@ -58,4 +58,22 @@ span {
 
 .Cell-Num8 {
     color: #595959;
+}
+
+.Cell-Bomb {
+    background: url("../images/mine.png") no-repeat center center;
+    background-size: 20px 20px;
+    text-indent: -9999px;
+    overflow: hidden;
+    display: block;
+    height: 100%;
+}
+
+.Cell-Flagged {
+    background: url("../images/flag.png") no-repeat center center;
+    background-size: 20px 20px;
+    text-indent: -9999px;
+    overflow: hidden;
+    display: block;
+    height: 100%;
 }
