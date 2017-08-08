@@ -4,7 +4,6 @@ import MainMenu from './menu/MainMenu';
 import StatisticsMenu from './menu/StatisticsMenu';
 import Minesweeper from './game/Minesweeper';
 import Statistics from './util/Statistics'
-import logo from './logo.svg';
 import './App.css';
 import './Popup.css'
 
